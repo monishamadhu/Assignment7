@@ -1,4 +1,4 @@
-package com.meritamerica.assignment7.security;
+package com.meritamerica.assignment7.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,18 +16,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.meritamerica.assignment7.filters.JwtRequestFilter;
-import com.meritamerica.assignment7.models.AuthenticationRequest;
-import com.meritamerica.assignment7.models.AuthenticationResponse;
-import com.meritamerica.assignment7.services.BankUserDetailsService;
-import com.meritamerica.assignment7.util.JwtUtil;
-
-
+import com.meritamerica.assignment7.security.AuthenticationRequest;
+import com.meritamerica.assignment7.security.AuthenticationResponse;
+import com.meritamerica.assignment7.security.filters.JwtRequestFilter;
+import com.meritamerica.assignment7.security.models.User;
+import com.meritamerica.assignment7.security.services.UserService;
+import com.meritamerica.assignment7.security.util.JwtUtil;
 
 @RestController
 class SecurityController {
@@ -39,7 +39,12 @@ class SecurityController {
 	private JwtUtil jwtTokenUtil;
 
 	@Autowired
-	private BankUserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;
+	
+	
+	@Autowired
+	private UserService userService;
+
 
 	@RequestMapping({ "/hello" })
 	public String firstPage() {
@@ -65,6 +70,13 @@ class SecurityController {
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+	}
+	
+	@PostMapping(value = "/authenticate/createuser")
+	//@ResponseStatus(HttpStatus.CREATED)
+	public User addUser(@RequestBody User user) {
+		//User newUser = new User(user.getUserName(), user.getPassword());
+		return userService.addUser(user);
 	}
 
 }
@@ -95,9 +107,13 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.csrf().disable()
-				.authorizeRequests().antMatchers("/authenticate").permitAll().
-						anyRequest().authenticated().and().
-						exceptionHandling().and().sessionManagement()
+				.authorizeRequests()
+				.antMatchers("/authenticate").permitAll()
+				.antMatchers("/authenticate/createUser").hasRole("ADMIN")
+				.antMatchers("/accountholder").hasRole("ADMIN")
+				.anyRequest().authenticated()
+				.and().exceptionHandling()
+				.and().sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

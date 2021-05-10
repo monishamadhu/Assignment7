@@ -1,21 +1,22 @@
-package com.meritamerica.assignment7.models;
+package com.meritamerica.assignment7.security.models;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+public class MyUserDetails implements UserDetails {
 
-public class BankUserDetails implements UserDetails  {
-	private String userName;
+    private String userName;
     private String password;
     private boolean active;
     private List<GrantedAuthority> authorities;
 
-    public BankUserDetails(User user) {
+    public MyUserDetails(User user) {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.active = user.isActive();
@@ -59,5 +60,3 @@ public class BankUserDetails implements UserDetails  {
         return active;
     }
 }
-
-

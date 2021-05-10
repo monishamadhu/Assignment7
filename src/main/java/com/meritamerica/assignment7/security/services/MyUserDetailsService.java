@@ -1,6 +1,4 @@
-package com.meritamerica.assignment7.services;
-
-import java.util.Optional;
+package com.meritamerica.assignment7.security.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +6,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.meritamerica.assignment7.models.BankUserDetails;
-import com.meritamerica.assignment7.models.User;
-import com.meritamerica.assignment7.repository.UserRepository;
+import com.meritamerica.assignment7.security.models.MyUserDetails;
+import com.meritamerica.assignment7.security.models.User;
+import com.meritamerica.assignment7.security.repository.UserRepository;
+
+import java.util.Optional;
 
 @Service
-public class BankUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     UserRepository userRepository;
@@ -24,7 +24,6 @@ public class BankUserDetailsService implements UserDetailsService {
 
         user.orElseThrow(() -> new UsernameNotFoundException("Not found: " + userName));
 
-        return user.map(BankUserDetails::new).get();
+        return user.map(MyUserDetails::new).get();
     }
 }
-

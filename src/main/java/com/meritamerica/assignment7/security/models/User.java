@@ -1,11 +1,17 @@
-package com.meritamerica.assignment7.models;
+package com.meritamerica.assignment7.security.models;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.meritamerica.assignment7.models.AccountHolder;
+import com.meritamerica.assignment7.models.AccountHoldersContactDetails;
 
 @Entity
 @Table(name = "User")
@@ -19,8 +25,31 @@ public class User {
     private String password;
     private boolean active;
     private String roles;
+    
+    
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private AccountHolder accountHolder;
+    
+    public User() {
+	}
 
-    public int getId() {
+	public User(String userName, String password) {
+		this.userName = userName;
+		this.password = password;
+		this.active = true;
+		this.roles = "ROLE_USER";
+	}
+
+    public AccountHolder getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(AccountHolder accountHolder) {
+		this.accountHolder = accountHolder;
+	}
+
+	public int getId() {
         return id;
     }
 

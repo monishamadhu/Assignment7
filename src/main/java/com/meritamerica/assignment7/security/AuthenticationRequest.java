@@ -1,4 +1,4 @@
-package com.meritamerica.assignment7.models;
+package com.meritamerica.assignment7.security;
 
 import java.io.Serializable;
 

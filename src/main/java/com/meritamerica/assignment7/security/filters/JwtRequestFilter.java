@@ -1,12 +1,7 @@
-package com.meritamerica.assignment7.filters;
+package com.meritamerica.assignment7.security.filters;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+//import io.javabrains.springsecurityjwt.MyUserDetailsService;
+//import io.javabrains.springsecurityjwt.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,16 +10,20 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.meritamerica.assignment7.services.BankUserDetailsService;
-import com.meritamerica.assignment7.util.JwtUtil;
+import com.meritamerica.assignment7.security.services.MyUserDetailsService;
+import com.meritamerica.assignment7.security.util.JwtUtil;
 
-
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Autowired
-    private BankUserDetailsService userDetailsService;
+    private MyUserDetailsService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;

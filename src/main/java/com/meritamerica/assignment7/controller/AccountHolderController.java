@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +33,7 @@ public class AccountHolderController {
 	private AccountHolderService accountHolderService;
 	
 	@PostMapping(value="/accountholder")
+	//@Secured("ROLE_ADMIN")
 	@ResponseStatus(HttpStatus.CREATED)
 	public AccountHolder addAccountHolder(@RequestBody @Valid AccountHolder accountHolder) {
 		try {
@@ -46,36 +48,42 @@ public class AccountHolderController {
 	}
 	
 	@GetMapping(value="/accountholders")
+	//@Secured("ROLE_ADMIN")
 	public List<AccountHolder> getAccHolders() {
 		return accountHolderService.getAccountHolders();
 	}
 	
 	@GetMapping(value="/accountholder/{id}")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public AccountHolder getAccHoldersById(@PathVariable int id) throws NoResourceFoundException {
 		return accountHolderService.getAccountHolderById(id); 
 	}
 	
 	@PostMapping("/accountholder/{id}/contactdetails")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public AccountHoldersContactDetails addContactDetails(@RequestBody @Valid AccountHoldersContactDetails accountHolderContact,@PathVariable int id) throws NoResourceFoundException {
 		return accountHolderService.addContactDetails(id, accountHolderContact);
 	}
 	
 	@GetMapping("/accountholder/{id}/checkingaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public List<CheckingAccount> getCheckingAccount(@PathVariable int id) throws NoResourceFoundException{
 		return accountHolderService.getCheckingAccount(id);
 	}
 	
 	@GetMapping("/accountholder/{id}/savingsaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public List<SavingsAccount> getSavingsAccount(@PathVariable int id) throws NoResourceFoundException{
 		return accountHolderService.getSavingsAccount(id);
 	}
 	
 	@GetMapping("/accountholder/{id}/cdaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public List<CDAccount> getCDAccount(@PathVariable int id) throws NoResourceFoundException{
 		return accountHolderService.getCDAccount(id);
 	}

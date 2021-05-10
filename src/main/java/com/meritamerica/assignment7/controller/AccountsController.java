@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,18 +30,21 @@ public class AccountsController {
 	
 	@PostMapping("/accountholder/{id}/checkingaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public CheckingAccount addCheckingAccount(@PathVariable int id,  @RequestBody CheckingAccount checkingAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
 		return accountsService.addCheckingAccount(id,checkingAccount);
 	}
 	
 	@PostMapping("/accountholder/{id}/savingsaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public SavingsAccount addSavingsAccount(@PathVariable int id,  @RequestBody SavingsAccount savingsAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
 		return accountsService.addSavingsAccount(id,savingsAccount);
 	}
 	
 	@PostMapping("/accountholder/{id}/cdaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
+	//@Secured("ROLE_ADMIN")
 	public CDAccount addCDAccount(@PathVariable int id,  @RequestBody CDAccountDTO dto) throws NoResourceFoundException, NegativeAmountException {
 		return accountsService.addCDAccount(id,dto);
 	}

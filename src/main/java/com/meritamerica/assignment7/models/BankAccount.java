@@ -24,21 +24,6 @@ public abstract class BankAccount {
 		this.interestRate = interestRate;
 		this.openingDate = LocalDateTime.now();
 	}
-	/*public BankAccount(double balance, double interestRate) {
-		this.balance=balance;
-		this.interestRate = interestRate;
-	}
-	public BankAccount(double balance,double interestRate,java.util.Date accountOpenedOn) {
-		this.balance=balance;
-		this.interestRate = interestRate;
-		this.date = accountOpenedOn;
-	}
-	public BankAccount(long accountNumber, double balance, double interestRate,java.util.Date accountOpenedOn) {
-		this.accountNumber= accountNumber;
-		this.balance=balance;
-		this.interestRate = interestRate;
-		this.date = accountOpenedOn;
-	}*/
 	
 	public double getBalance() {
 		return balance;
