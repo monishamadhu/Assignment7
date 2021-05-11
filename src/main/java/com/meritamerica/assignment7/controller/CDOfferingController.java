@@ -27,7 +27,7 @@ public class CDOfferingController {
 	
 	@PostMapping(value="/cdofferings")
 	@ResponseStatus(HttpStatus.CREATED)
-	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public CDOffering cdOfferings(@RequestBody CDOffering cdoffering) throws InvalidAccountDetailsException {
 		return cdOfferingService.addCDOffering(cdoffering);
 	}
@@ -36,5 +36,4 @@ public class CDOfferingController {
 	public List<CDOffering> getCDOfferings() {
 		return cdOfferingService.getCDOfferings(); 
 	}
-	
 }

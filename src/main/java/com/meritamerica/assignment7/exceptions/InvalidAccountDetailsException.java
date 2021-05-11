@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class InvalidAccountDetailsException extends Exception{
-
 	public InvalidAccountDetailsException(String message) {
 		super(message);
 	}
-
 }

@@ -21,13 +21,10 @@ public class CDOfferingServiceImpl implements CDOfferingService {
 			throw new InvalidAccountDetailsException("Invalid details");
 		}
 		return cdOfferingRepository.save(cdoffering);
-		
 	}
 
 	@Override
 	public List<CDOffering> getCDOfferings() {
 		return cdOfferingRepository.findAll();
 	}
-
-
 }

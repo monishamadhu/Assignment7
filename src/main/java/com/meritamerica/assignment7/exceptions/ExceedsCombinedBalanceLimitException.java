@@ -7,7 +7,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ExceedsCombinedBalanceLimitException extends Exception {
 	public ExceedsCombinedBalanceLimitException(String message) {
 		super(message);
-		
 	}
-
 }

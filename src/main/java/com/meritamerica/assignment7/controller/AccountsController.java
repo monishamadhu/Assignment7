@@ -30,23 +30,22 @@ public class AccountsController {
 	
 	@PostMapping("/accountholder/{id}/checkingaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public CheckingAccount addCheckingAccount(@PathVariable int id,  @RequestBody CheckingAccount checkingAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
 		return accountsService.addCheckingAccount(id,checkingAccount);
 	}
 	
 	@PostMapping("/accountholder/{id}/savingsaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public SavingsAccount addSavingsAccount(@PathVariable int id,  @RequestBody SavingsAccount savingsAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
 		return accountsService.addSavingsAccount(id,savingsAccount);
 	}
 	
 	@PostMapping("/accountholder/{id}/cdaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
-	//@Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public CDAccount addCDAccount(@PathVariable int id,  @RequestBody CDAccountDTO dto) throws NoResourceFoundException, NegativeAmountException {
 		return accountsService.addCDAccount(id,dto);
 	}
-	
 }

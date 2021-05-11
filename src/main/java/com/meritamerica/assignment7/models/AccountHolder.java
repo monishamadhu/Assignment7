@@ -52,7 +52,6 @@ public class AccountHolder {
 	@JoinColumn(name = "user_id")
 	private User user;
 	
-	
 	public User getUser() {
 		return user;
 	}

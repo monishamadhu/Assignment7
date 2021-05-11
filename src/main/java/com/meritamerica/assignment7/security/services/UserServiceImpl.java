@@ -1,5 +1,7 @@
 package com.meritamerica.assignment7.security.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getUser(int userId) {
 		return userRepository.findById(userId).orElse(null);
+	}
+
+	@Override
+	public User getUserByUserName(String username) {
+		return userRepository.findByUserName(username).orElse(null);
 	}
 	
 }

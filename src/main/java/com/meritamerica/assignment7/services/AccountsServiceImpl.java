@@ -39,8 +39,6 @@ public class AccountsServiceImpl implements AccountsService {
 	@Override
 	public CheckingAccount addCheckingAccount(int accountHolderId, CheckingAccount checkingAccount)throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
 
-		
-		
 		if(checkingAccount.getBalance()<0) {
 			throw new NegativeAmountException();
 		} 	
@@ -92,7 +90,5 @@ public class AccountsServiceImpl implements AccountsService {
 		cd.setAccountHolder(accountHolder);
 		return cdAccountRepository.save(cd);
 	}
-
-	
 
 }

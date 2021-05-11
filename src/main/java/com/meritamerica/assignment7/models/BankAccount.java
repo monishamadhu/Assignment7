@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-
 public abstract class BankAccount {
 
 	private  double balance;

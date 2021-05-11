@@ -6,5 +6,4 @@ import com.meritamerica.assignment7.models.CheckingAccount;
 
 public interface CheckingAccountRepository extends JpaRepository<CheckingAccount,Integer>{
 
-	
 }
