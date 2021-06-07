@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,9 @@ import com.meritamerica.assignment7.security.models.User;
 import com.meritamerica.assignment7.security.services.UserService;
 import com.meritamerica.assignment7.security.util.JwtUtil;
 
+
 @RestController
+@CrossOrigin(origins = "*")
 class SecurityController {
 
 	@Autowired
@@ -49,7 +52,7 @@ class SecurityController {
 
 	@RequestMapping({ "/hello" })
 	public String firstPage() {
-		return "Hello World";
+		return "Welcome to Merit Bank";
 	}
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -66,9 +69,34 @@ class SecurityController {
 
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new AuthenticationResponse(jwt));
+		
+		UserDTO dto = new UserDTO(jwt, userDetails.getAuthorities().toString());	// to include the Role along with jwt in the response
+		return ResponseEntity.ok(dto);
+
+		//return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 	
+	public static class UserDTO {
+		public UserDTO(String jwt, String roles) {
+			this.jwt = jwt;
+			this.roles = roles;
+		}
+		String jwt;
+		String roles;
+		
+		public String getJwt() {
+			return jwt;
+		}
+		public void setJwt(String jwt) {
+			this.jwt = jwt;
+		}
+		public String getRoles() {
+			return roles;
+		}
+		public void setRoles(String roles) {
+			this.roles = roles;
+		}
+	}
 	@PostMapping(value = "/authenticate/createuser")
 	//@ResponseStatus(HttpStatus.CREATED)
 	public User addUser(@RequestBody User user) {
@@ -104,6 +132,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		httpSecurity.csrf().disable()
 				.authorizeRequests()
 				.antMatchers("/authenticate").permitAll()
+				.antMatchers("/swagger-ui/**").permitAll()
+				.antMatchers("/swagger-ui.html").permitAll()
+				.antMatchers("/configuration/**").permitAll()
+				.antMatchers("/swagger-resources/**").permitAll()
+				.antMatchers("/v2/api-docs").permitAll()
 				.antMatchers("/authenticate/createUser").hasRole("ADMIN")
 				.antMatchers("/accountholder").hasRole("ADMIN")
 				.antMatchers(HttpMethod.GET,"/cdofferings").hasAnyRole("ADMIN", "USER")

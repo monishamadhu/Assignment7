@@ -158,7 +158,7 @@ POST /authenticate
 	"password": "adminpass"
 }
 
-POST /authenticate/createUser
+POST /authenticate/createuser
 
 header: Authorization: Bearer <admin token>
 
