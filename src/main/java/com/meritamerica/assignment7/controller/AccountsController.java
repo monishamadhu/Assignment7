@@ -71,14 +71,14 @@ public class AccountsController {
 		return accountsService.addRolloverIRAAccount(id,rolloverIRAAccount);
 	}
 	
-	@PostMapping("/accountholder/{id}/rothaccounts")
+	@PostMapping("/accountholder/{id}/rothiraaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
 	@Secured("ROLE_ADMIN")
 	public RothIRAAccount addRothIRAAccount(@PathVariable int id,  @RequestBody RothIRAAccount rothIRAAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
 		return accountsService.addRothIRAAccount(id,rothIRAAccount);
 	}
 	
-	@PostMapping("/accountholder/{id}/regularaccounts")
+	@PostMapping("/accountholder/{id}/regulariraaccounts")
 	@ResponseStatus(HttpStatus.CREATED)
 	@Secured("ROLE_ADMIN")
 	public RegularIRAAccount addRegularIRAAccount(@PathVariable int id,  @RequestBody RegularIRAAccount regularIRAAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
