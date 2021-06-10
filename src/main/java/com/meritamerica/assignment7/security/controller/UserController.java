@@ -21,12 +21,17 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.meritamerica.assignment7.exceptions.ExceedsCombinedBalanceLimitException;
+import com.meritamerica.assignment7.exceptions.ExceedsNumberOfAccountsLimitException;
 import com.meritamerica.assignment7.exceptions.NegativeAmountException;
 import com.meritamerica.assignment7.exceptions.NoResourceFoundException;
 import com.meritamerica.assignment7.models.AccountHolder;
 import com.meritamerica.assignment7.models.CDAccount;
 import com.meritamerica.assignment7.models.CDAccountDTO;
 import com.meritamerica.assignment7.models.CheckingAccount;
+import com.meritamerica.assignment7.models.DBACheckingAccount;
+import com.meritamerica.assignment7.models.RegularIRAAccount;
+import com.meritamerica.assignment7.models.RolloverIRAAccount;
+import com.meritamerica.assignment7.models.RothIRAAccount;
 import com.meritamerica.assignment7.models.SavingsAccount;
 import com.meritamerica.assignment7.security.AuthenticationRequest;
 import com.meritamerica.assignment7.security.AuthenticationResponse;
@@ -59,7 +64,7 @@ public class UserController {
 	
 	@PostMapping("/Me/checkingaccounts")
 	@Secured("ROLE_USER")
-	public CheckingAccount addCheckingAccount(@RequestBody CheckingAccount checkingAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
+	public CheckingAccount addCheckingAccount(@RequestBody CheckingAccount checkingAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
 		if(checkingAccount.getBalance()<0) {
 			throw new NegativeAmountException();
 		}
@@ -86,7 +91,7 @@ public class UserController {
 	
 	@PostMapping("/Me/savingsaccounts")
 	@Secured("ROLE_USER")
-	public SavingsAccount addSavingsAccount(@RequestBody SavingsAccount savingsAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException {
+	public SavingsAccount addSavingsAccount(@RequestBody SavingsAccount savingsAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
 		if(savingsAccount.getBalance()<0) {
 			throw new NegativeAmountException();
 		}
@@ -132,6 +137,99 @@ public class UserController {
 		String username = jwtTokenUtil.getCurrentUserName();
 		User user = userService.getUserByUserName(username);
 		return user.getAccountHolder().getCdAccList();
+	}
+	
+	@PostMapping("/Me/dbacheckingaccounts")
+	@Secured("ROLE_USER")
+	public DBACheckingAccount addDBACheckingAccount(@RequestBody DBACheckingAccount dbaCheckingAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
+		if(dbaCheckingAccount.getBalance()<0) {
+			throw new NegativeAmountException();
+		}
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		AccountHolder accHolder= user.getAccountHolder();
+		if(accHolder==null) {
+			throw new NoResourceFoundException("Invalid id");
+		}
+
+		return accountsService.addDBACheckingAccount(accHolder.getId(),dbaCheckingAccount);
+	}
+	
+	@GetMapping("/Me/dbacheckingaccounts")
+	@Secured("ROLE_USER")
+	public List<DBACheckingAccount> getDBACheckingAccount(){
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		return user.getAccountHolder().getDbaCheckingAccountList();
+	}
+	@PostMapping("/Me/regulariraaccounts")
+	@Secured("ROLE_USER")
+	public RegularIRAAccount addRegularIRAAccount(@RequestBody RegularIRAAccount regularIRAAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
+		if(regularIRAAccount.getBalance()<0) {
+			throw new NegativeAmountException();
+		}
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		AccountHolder accHolder= user.getAccountHolder();
+		if(accHolder==null) {
+			throw new NoResourceFoundException("Invalid id");
+		}
+
+		return accountsService.addRegularIRAAccount(accHolder.getId(),regularIRAAccount);
+	}
+	
+	@GetMapping("/Me/regulariraaccounts")
+	@Secured("ROLE_USER")
+	public List<RegularIRAAccount> getRegularIRAAccount(){
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		return user.getAccountHolder().getRegularIRAAccountList();
+	}
+	@PostMapping("/Me/rothiraaccounts")
+	@Secured("ROLE_USER")
+	public RothIRAAccount addRothIRAAccount(@RequestBody RothIRAAccount rothIRAAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
+		if(rothIRAAccount.getBalance()<0) {
+			throw new NegativeAmountException();
+		}
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		AccountHolder accHolder= user.getAccountHolder();
+		if(accHolder==null) {
+			throw new NoResourceFoundException("Invalid id");
+		}
+
+		return accountsService.addRothIRAAccount(accHolder.getId(),rothIRAAccount);
+	}
+	
+	@GetMapping("/Me/rothiraaccounts")
+	@Secured("ROLE_USER")
+	public List<RothIRAAccount> getRothIRAAccount(){
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		return user.getAccountHolder().getRothIRAAccountList();
+	}
+	@PostMapping("/Me/rolloveriraaccounts")
+	@Secured("ROLE_USER")
+	public RolloverIRAAccount addRolloverIRAAccount(@RequestBody RolloverIRAAccount rolloverIRAAccount) throws NoResourceFoundException, NegativeAmountException, ExceedsCombinedBalanceLimitException, ExceedsNumberOfAccountsLimitException {
+		if(rolloverIRAAccount.getBalance()<0) {
+			throw new NegativeAmountException();
+		}
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		AccountHolder accHolder= user.getAccountHolder();
+		if(accHolder==null) {
+			throw new NoResourceFoundException("Invalid id");
+		}
+
+		return accountsService.addRolloverIRAAccount(accHolder.getId(),rolloverIRAAccount);
+	}
+	
+	@GetMapping("/Me/rolloveriraaccounts")
+	@Secured("ROLE_USER")
+	public List<RolloverIRAAccount> getRolloverIRAAccount(){
+		String username = jwtTokenUtil.getCurrentUserName();
+		User user = userService.getUserByUserName(username);
+		return user.getAccountHolder().getRolloverIRAAccountList();
 	}
 
 }
